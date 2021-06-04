@@ -1,0 +1,24 @@
+GET http://localhost:8080/user/
+
+###
+POST http://localhost:8080/user/login
+Content-Type: application/json
+
+{
+    "userName": "Leeeeeeeeee",
+    "email": "myemail",
+    "password": "donalskehan11",
+    "avatar": "avt"
+}
+####
+
+
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+    "userName": "Leeeeeeeeee",
+    "email": "myemail",
+    "password": "donalskehan11",
+    "avatar": "avt"
+}
