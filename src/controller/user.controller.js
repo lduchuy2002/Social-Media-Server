@@ -60,8 +60,10 @@ const userController = {
     }
   },
   register: async (req, res, next) => {
-    console.log(req.file);
-    const { account, name, email, password, avatar } = req.body;
+    const { account, name, email, password } = req.body;
+    if (!req.file) {
+      return errorResponse(res, VALIDATE_MESSAGE.MISSING_AVATAR, 401);
+    }
     //if user is aleady exist in the database
     const existUser = await User.findOne({ account: account });
     if (existUser !== null) {
@@ -72,8 +74,20 @@ const userController = {
       await yupForName.validate(name);
       await yupForEmail.validate(email);
       await yupForPassword.validate(password);
+      const hashedPassword = await bcrypt.hash(password, 13);
+      const user = new User({
+        account,
+        name,
+        email,
+        password: hashedPassword,
+        avatar: req.file.path,
+      });
+      user
+        .save()
+        .then(() => res.send({ message: "Register success!" }))
+        .catch(res.send);
     } catch (error) {
-      return errorResponse(res, error.message, 401);
+      return errorResponse(res, error.message, 404);
     }
   },
 };
