@@ -19,11 +19,11 @@ app.post("/", async (req, res, next) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 13);
     const user = new User({
-      userName: req.body.userName,
+      account: req.body.account,
+      name: req.body.name,
       email: req.body.email,
       password: hashedPassword,
       avatar: req.body.avatar,
-      token: "Token",
     });
     await user.save();
   } catch (error) {

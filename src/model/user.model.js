@@ -1,7 +1,14 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
-  userName: {
+  account: {
+    type: String,
+    min: 6,
+    max: 16,
+    required: "User name is required",
+    unique: true,
+  },
+  name: {
     type: String,
     min: 6,
     max: 16,
@@ -24,14 +31,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: "Please choose a picture to set your avatar",
   },
-  token: {
-    type: String,
-    required: "Access token is required",
+  posts: {
+    type: Array,
+    default: [],
   },
-  refreshToken: {
+  likes: {
     type: Array,
     default: [],
   },
 });
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model("User", userSchema);

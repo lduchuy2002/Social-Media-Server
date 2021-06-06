@@ -6,24 +6,32 @@ const jwt = require("jsonwebtoken");
 
 const VALIDATE_MESSAGE = require("../constant/validate.messages");
 
-const userYupSchema = yup.object().shape({
-  userName: yup.string().min(6).max(16).required(),
-  password: yup.string().min(6).max(16).required(),
-});
+const yupForAccount = yup
+  .string()
+  .matches(/^[a-zA-Z0-9]{6,18}$/g, "Invalid account format")
+  .min(6, "Account length must be at least 6 characters")
+  .max(16, "Account length must be less than 16 characters")
+  .required();
+
+const yupForName = yup.string().min(6).max(24).required();
+const yupForEmail = yup.string().email("Invalid email format").required();
+const yupForPassword = yup
+  .string()
+  .matches(/^[a-zA-Z0-9!@#$%^&*]{6,18}$/g, "Invalid password format")
+  .min(6, "Password length must be at least 6 characters")
+  .max(16, "Password length must be less than 16 characters")
+  .required();
 
 const userController = {
   login: async (req, res, next) => {
     // Validate userName and password
     try {
-      const validatedUser = await userYupSchema.validate(req.body, {
-        abortEarly: false,
-        stripUnknown: true,
-      });
-      console.log(bcrypt);
+      const validatedAccount = await yupForAccount.validate(req.body.account);
+
       //hashed password
       const hashedPassword = await bcrypt.hash(req.body.password, 13);
 
-      User.findOne({ userName: validatedUser.userName })
+      User.findOne({ account: validatedAccount.account })
         .then(user => {
           //Check if req.body.password equals to user password
           const checkPassword = bcrypt.compare(hashedPassword, user.password);
@@ -34,11 +42,14 @@ const userController = {
             const token = jwt.sign({ id: user._id.toString() }, process.env.ACCESS_TOKEN_SECRET);
             user.token = token;
             //Save token
-            user.save().then(user => {
-              user = user.toObject();
-              delete user.password;
-              res.send(user);
-            });
+            user
+              .save()
+              .then(user => {
+                user = user.toObject();
+                delete user.password;
+                res.send(user);
+              })
+              .catch(() => errorResponse(res, "BAD REQUEST", 404));
           }
         })
         //If user does'nt exist
@@ -46,6 +57,23 @@ const userController = {
     } catch (error) {
       //If validate failed
       errorResponse(res, error.message, 401);
+    }
+  },
+  register: async (req, res, next) => {
+    console.log(req.file);
+    const { account, name, email, password, avatar } = req.body;
+    //if user is aleady exist in the database
+    const existUser = await User.findOne({ account: account });
+    if (existUser !== null) {
+      return errorResponse(res, VALIDATE_MESSAGE.USER_ALREADY_EXIST, 401);
+    }
+    try {
+      await yupForAccount.validate(account);
+      await yupForName.validate(name);
+      await yupForEmail.validate(email);
+      await yupForPassword.validate(password);
+    } catch (error) {
+      return errorResponse(res, error.message, 401);
     }
   },
 };
