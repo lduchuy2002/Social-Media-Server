@@ -9,8 +9,8 @@ const VALIDATE_MESSAGE = require("../constant/validate.messages");
 const yupForAccount = yup
   .string()
   .matches(/^[a-zA-Z0-9]{6,18}$/g, "Invalid account format")
-  .min(6, "Account length must be at least 6 characters")
-  .max(16, "Account length must be less than 16 characters")
+  .min(6)
+  .max(16)
   .required();
 
 const yupForName = yup.string().min(6).max(24).required();
@@ -18,8 +18,8 @@ const yupForEmail = yup.string().email("Invalid email format").required();
 const yupForPassword = yup
   .string()
   .matches(/^[a-zA-Z0-9!@#$%^&*]{6,18}$/g, "Invalid password format")
-  .min(6, "Password length must be at least 6 characters")
-  .max(16, "Password length must be less than 16 characters")
+  .min(6)
+  .max(16)
   .required();
 
 const userController = {
