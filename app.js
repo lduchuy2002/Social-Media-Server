@@ -4,8 +4,12 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+//import route
 const userRoute = require("./src/routes/user.route");
 const postsRoute = require("./src/routes/posts.route");
+
+//authen middleware
+const authenToken = require("./src/middleware/authToken");
 
 const port = process.env.PORT || 8080;
 
@@ -20,7 +24,7 @@ app.use(cors());
 //Routing
 
 app.use("/user", userRoute);
-app.use("/post", postsRoute);
+app.use("/post", authenToken, postsRoute);
 
 //Run server
 app.listen(port, () => {
