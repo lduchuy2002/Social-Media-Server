@@ -5,5 +5,6 @@ const upload = require("../middleware/fileUpload.middleware");
 
 userRoute.post("/login", userController.login);
 userRoute.post("/register", upload.single("avatar"), userController.register);
+userRoute.get("/:account", userController.about);
 
 module.exports = userRoute;

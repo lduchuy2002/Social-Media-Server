@@ -2,7 +2,6 @@ const yup = require("yup");
 const User = require("../model/user.model");
 const errorResponse = require("../errorHandler/errorResponse");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 const VALIDATE_MESSAGE = require("../constant/validate.messages");
 
@@ -39,8 +38,6 @@ const userController = {
           if (!checkPassword) {
             errorResponse(res, VALIDATE_MESSAGE.PASSWORD_INCORRECT, 401);
           } else {
-            const token = jwt.sign({ id: user._id.toString() }, process.env.ACCESS_TOKEN_SECRET);
-            user.token = token;
             //Save token
             user
               .save()
@@ -84,11 +81,20 @@ const userController = {
       });
       user
         .save()
-        .then(() => res.send({ message: "Register success!" }))
+        .then(() => res.status(201).send({ message: "Register successfully!" }))
         .catch(res.send);
     } catch (error) {
       return errorResponse(res, error.message, 404);
     }
+  },
+  about: async (req, res, next) => {
+    const user = await User.findOne({ account: req.params.account });
+    if (user === null) {
+      return errorResponse(res, "User not found!", 400);
+    }
+    user = user.toObject();
+    delete user.password;
+    return res.json(user);
   },
 };
 
