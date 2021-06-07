@@ -1,5 +1,12 @@
 
-GET http://localhost:8080/
+POST http://localhost:8080/
+Content-Type: application/json
+
+{
+    "name": "testing jwt"
+}
+
+
 
 ###
 POST http://localhost:8080/user/login
@@ -25,3 +32,8 @@ Content-Type: application/json
     "password": "caccac",
     
 }
+####
+
+POST http://localhost:8080/POST     HTTP/1.1
+Authorization: :bearer asfakflafa;lfma;fla
+

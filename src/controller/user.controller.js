@@ -12,7 +12,7 @@ const yupForAccount = yup
   .max(16)
   .required();
 
-const yupForName = yup.string().min(6).max(24).required();
+const yupForName = yup.string().min(4).max(24).required();
 const yupForEmail = yup.string().email("Invalid email format").required();
 const yupForPassword = yup
   .string()
@@ -50,7 +50,7 @@ const userController = {
           }
         })
         //If user does'nt exist
-        .catch(err => errorResponse(res, VALIDATE_MESSAGE.USER_NOT_FOUND, 401));
+        .catch(() => errorResponse(res, VALIDATE_MESSAGE.USER_NOT_FOUND, 401));
     } catch (error) {
       //If validate failed
       errorResponse(res, error.message, 401);
