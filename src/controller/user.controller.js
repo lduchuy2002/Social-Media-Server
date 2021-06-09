@@ -2,6 +2,8 @@ const yup = require("yup");
 const User = require("../model/user.model");
 const errorResponse = require("../errorHandler/errorResponse");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const jsonifyError = require("jsonify-error");
 
 const VALIDATE_MESSAGE = require("../constant/validate.messages");
 
@@ -23,28 +25,30 @@ const yupForPassword = yup
 
 const userController = {
   login: async (req, res, next) => {
-    // Validate userName and password
+    // Validate account and password
     try {
       const validatedAccount = await yupForAccount.validate(req.body.account);
 
       //hashed password
       const hashedPassword = await bcrypt.hash(req.body.password, 13);
 
-      User.findOne({ account: validatedAccount.account })
-        .then(user => {
+      User.findOne({ account: validatedAccount })
+        .then(async user => {
           //Check if req.body.password equals to user password
-          const checkPassword = bcrypt.compare(hashedPassword, user.password);
+          const checkPassword = await bcrypt.compare(hashedPassword, user.password);
 
           if (!checkPassword) {
-            errorResponse(res, VALIDATE_MESSAGE.PASSWORD_INCORRECT, 401);
+            return errorResponse(res, VALIDATE_MESSAGE.PASSWORD_INCORRECT, 401);
           } else {
             //Save token
+            const token = jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET);
+            user.token = token;
             user
               .save()
               .then(user => {
                 user = user.toObject();
                 delete user.password;
-                res.send(user);
+                return res.send(user);
               })
               .catch(() => errorResponse(res, "BAD REQUEST", 404));
           }
@@ -53,7 +57,7 @@ const userController = {
         .catch(() => errorResponse(res, VALIDATE_MESSAGE.USER_NOT_FOUND, 401));
     } catch (error) {
       //If validate failed
-      errorResponse(res, error.message, 401);
+      errorResponse(res, jsonifyError(error), 401);
     }
   },
   register: async (req, res, next) => {
@@ -82,9 +86,9 @@ const userController = {
       user
         .save()
         .then(() => res.status(201).send({ message: "Register successfully!" }))
-        .catch(res.send);
+        .catch(error => res.status(400).send(error));
     } catch (error) {
-      return errorResponse(res, error.message, 404);
+      return errorResponse(res, jsonifyError(error), 404);
     }
   },
   about: async (req, res, next) => {
@@ -92,9 +96,12 @@ const userController = {
     if (user === null) {
       return errorResponse(res, "User not found!", 400);
     }
-    user = user.toObject();
-    delete user.password;
-    return res.json(user);
+    if (user._id === req.encoded._id) {
+      user = user.toObject();
+      delete user.password;
+      return res.json(user);
+    }
+    return res.status(403).send({ message: "Access denied!" });
   },
 };
 

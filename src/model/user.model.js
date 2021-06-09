@@ -10,10 +10,9 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    min: 6,
-    max: 16,
+    min: 4,
+    max: 24,
     required: "User name is required",
-    unique: true,
   },
   email: {
     type: String,
@@ -30,6 +29,10 @@ const userSchema = new mongoose.Schema({
   avatar: {
     type: String,
     required: "Please choose a picture to set your avatar",
+  },
+  token: {
+    type: String,
+    default: null,
   },
   posts: {
     type: Array,

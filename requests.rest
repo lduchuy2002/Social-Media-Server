@@ -1,9 +1,9 @@
 
-POST http://localhost:8080/
+GET http://localhost:8080/
 Content-Type: application/json
 
 {
-    "name": "testing jwt"
+    "id": "60bddbe0957ed9172883b790"
 }
 
 
@@ -13,27 +13,43 @@ POST http://localhost:8080/user/login
 Content-Type: application/json
 
 {
-    "account": "tet3",
-    "name": "Le duc huy",
-    "email": "myemail@gmail.com",
-    "password": "caccac",
-    "avatar": "avt"
+    "account": "ldhuy0102work",
+    "password": "mypassword"
 }
 ####
+GET http://localhost:8080/user/ldhuy0102work
+Authorization: :bearer eyJhbGciOiJIUzI1NiJ9.NjBiZGRiZTA5NTdlZDkxNzI4ODNiNzkw.xlEqFIRb1PdlGO6DtmjNTmD4QtLn_vu8D7jx6AZ7uHQ
+Content-Type: application/json
 
 
+####
 POST http://localhost:8080/user/register
 Content-Type: application/json
 
 {
-    "account": "testaccount3",
-    "name": "Le duc huy",
-    "email": "myemail@gmail.com",
-    "password": "caccac",
-    
+    "account": "ldhuy0102work",
+    "email": "testemail1@gmail.com",
+    "name": "Duc huy",
+    "password": "matkhautest1"
+
 }
 ####
 
-POST http://localhost:8080/POST     HTTP/1.1
-Authorization: :bearer asfakflafa;lfma;fla
+POST http://localhost:8080/post/create HTTP/1.1   
+Authorization: :bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGJlZWM5ZDJjN2UzMTIxMzRmYTM1ZTAiLCJpYXQiOjE2MjMxMjY4MzF9.jPx7G-MpIBWl8LGBi9DwgEqTSYblYNepNE3YsUExSps
+Content-Type: application/json
 
+{
+    "content": "Hôm nawy trời đéo đẹp"
+}
+
+
+
+####
+DELETE http://localhost:8080/post/delete HTTP/1.1
+Authorization: :bearer eyJhbGciOiJIUzI1NiJ9.NjBiZGRiZTA5NTdlZDkxNzI4ODNiNzkw.xlEqFIRb1PdlGO6DtmjNTmD4QtLn_vu8D7jx6AZ7uHQ
+Content-Type: application/json
+
+{
+    "_id": "60bddc2c6f392830d0f4d139"
+}
