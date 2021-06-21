@@ -8,7 +8,6 @@ const authenToken = (req, res, next) => {
       if (error) {
         return res.status(403).send(jsonifyError(error));
       }
-      console.log('no error')
       req.token = token;
       req.encoded = encoded;
       next();

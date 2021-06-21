@@ -104,6 +104,12 @@ const userController = {
     }
     return res.status(403).send({ message: "Access denied!" });
   },
+  logout: async (req,res,next)=>{
+    req.user.token = req.user.token.filter(token => token !== req.token);
+    await req.user.save()
+    .then(()=>res.send({message: "Logout successfully!"}))
+    .catch(()=>res.status(500).send({message: "Server error!"}))
+  }
 };
 
 module.exports = userController;
