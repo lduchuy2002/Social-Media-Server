@@ -13,9 +13,12 @@ POST http://localhost:8080/user/login
 Content-Type: application/json
 
 {
-    "account": "ldhuy0102work",
-    "password": "mypassword"
+    "account": "ldhuy01011",
+    "password": "donalskehan11"
 }
+
+
+
 ####
 GET http://localhost:8080/user/ldhuy0102work
 Authorization: :bearer eyJhbGciOiJIUzI1NiJ9.NjBiZGRiZTA5NTdlZDkxNzI4ODNiNzkw.xlEqFIRb1PdlGO6DtmjNTmD4QtLn_vu8D7jx6AZ7uHQ
@@ -36,7 +39,7 @@ Content-Type: application/json
 ####
 
 POST http://localhost:8080/post/create HTTP/1.1   
-Authorization: :bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGJlZWM5ZDJjN2UzMTIxMzRmYTM1ZTAiLCJpYXQiOjE2MjMxMjY4MzF9.jPx7G-MpIBWl8LGBi9DwgEqTSYblYNepNE3YsUExSps
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGNlYjk4ZDIyZDA2NDM4ZWMwYzQxNzYiLCJpYXQiOjE2MjQyMDIwMTN9.JNYotE1xXb6U1stpMJ7J30JBzv4vQPS_bseTdBqW8x0
 Content-Type: application/json
 
 {
@@ -46,10 +49,5 @@ Content-Type: application/json
 
 
 ####
-DELETE http://localhost:8080/post/delete HTTP/1.1
-Authorization: :bearer eyJhbGciOiJIUzI1NiJ9.NjBiZGRiZTA5NTdlZDkxNzI4ODNiNzkw.xlEqFIRb1PdlGO6DtmjNTmD4QtLn_vu8D7jx6AZ7uHQ
-Content-Type: application/json
-
-{
-    "_id": "60bddc2c6f392830d0f4d139"
-}
+DELETE http://localhost:8080/post/delete/60d006b7d63d2b1fdcd9c350 HTTP/1.1 
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGNlYjk4ZDIyZDA2NDM4ZWMwYzQxNzYiLCJpYXQiOjE2MjQyMDIwMTN9.JNYotE1xXb6U1stpMJ7J30JBzv4vQPS_bseTdBqW8x0

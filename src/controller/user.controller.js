@@ -5,6 +5,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const jsonifyError = require("jsonify-error");
 
+
+
+
 const VALIDATE_MESSAGE = require("../constant/validate.messages");
 
 const yupForAccount = yup
@@ -28,21 +31,19 @@ const userController = {
     // Validate account and password
     try {
       const validatedAccount = await yupForAccount.validate(req.body.account);
-
+      const password = await yupForPassword.validate(req.body.password);
       //hashed password
-      const hashedPassword = await bcrypt.hash(req.body.password, 13);
-
       User.findOne({ account: validatedAccount })
         .then(async user => {
           //Check if req.body.password equals to user password
-          const checkPassword = await bcrypt.compare(hashedPassword, user.password);
-
-          if (!checkPassword) {
+      
+          const isEqualPassword = await bcrypt.compare(password , user.password);
+          if (!isEqualPassword) {
             return errorResponse(res, VALIDATE_MESSAGE.PASSWORD_INCORRECT, 401);
           } else {
             //Save token
             const token = jwt.sign({ _id: user._id }, process.env.ACCESS_TOKEN_SECRET);
-            user.token = token;
+            user.token.push(token);
             user
               .save()
               .then(user => {
@@ -57,7 +58,7 @@ const userController = {
         .catch(() => errorResponse(res, VALIDATE_MESSAGE.USER_NOT_FOUND, 401));
     } catch (error) {
       //If validate failed
-      errorResponse(res, jsonifyError(error), 401);
+      return res.status(400).send(error);
     }
   },
   register: async (req, res, next) => {
@@ -75,7 +76,7 @@ const userController = {
       await yupForName.validate(name);
       await yupForEmail.validate(email);
       await yupForPassword.validate(password);
-      const hashedPassword = await bcrypt.hash(password, 13);
+      const hashedPassword = await bcrypt.hash(yupForPassword, 13);
       const user = new User({
         account,
         name,

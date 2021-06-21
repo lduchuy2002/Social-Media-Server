@@ -26,21 +26,28 @@ message: "Register successfully"
 
 ######
 
-GET http://localhost:8080/user/login
-Headers {
-Authorization: access-token
+POST http://localhost:8080/post/create
+--request
+Headers{
+    Authorization: access-token
 }
-params: account
+Body {
+    access-token, content, images
+}
+
+
 --response {
-account, email, name, avatar, posts [], likes [],
+    postedBy, content, images, likes, comment, createAt
 }
 
 #####
 
-POST http://localhost:8080/post/create
+POST http://localhost:8080/post/delete/<postId>
+--request 
+
 Headers {
 Authorization: access-token
 }
---request {
-
+--response {
+    message
 }

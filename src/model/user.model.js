@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema({
     required: "Please choose a picture to set your avatar",
   },
   token: {
-    type: String,
-    default: null,
+    type: Array,
+    default: [],
   },
   posts: {
     type: Array,

@@ -9,13 +9,15 @@ const userRoute = require("./src/routes/user.route");
 const postsRoute = require("./src/routes/posts.route");
 
 //authen middleware
-const authenToken = require("./src/middleware/authToken.middleware");
+const verifyToken = require("./src/middleware/verifyToken.middleware");
+const authorUser = require('./src/middleware/authorizeUser.middleware')
+
 
 const port = process.env.PORT || 8080;
 
 // Set up database
-mongoose.connect(process.env.DB_URL, { useNewUrlParser: true }, () => {
-  console.log("Connected to mongo database!");
+mongoose.connect(process.env.DB_URL, { useNewUrlParser: true }, err => {
+  console.log("Connected to mongo database! " + err);
 });
 //App setting
 app.use(express.json());
@@ -27,7 +29,7 @@ app.get("/", (req, res, next) => {
 //Routing
 
 app.use("/user", userRoute);
-app.use("/post", authenToken, postsRoute);
+app.use("/post", verifyToken,authorUser, postsRoute);
 
 //Run server
 app.listen(port, () => {

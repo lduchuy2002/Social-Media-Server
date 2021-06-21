@@ -11,10 +11,11 @@ const postsController = {
       if (req.files) {
         photos = req.files.map(photo => photo.path);
       }
+      const posttedById = req.encoded._id.trim()
       const post = new Post({
-        postedBy: mongoose.mongo.ObjectId(req.encoded._id),
+        postedBy: mongoose.mongo.ObjectId(posttedById),
         content: req.body.content,
-        images: photos,
+        images: [...photos],
       });
       await post.save();
       return res.send(post);
@@ -23,9 +24,13 @@ const postsController = {
     }
   },
   deletePost: (req, res, next) => {
-    const postId = req.body._id;
+    const postId = req.params.postId;
+    const postedByUser = req.encoded._id;
     Post.findByIdAndDelete(postId)
       .then(post => {
+        if (post.postedBy.toString() !== postedByUser) {
+          return res.status(403).send({ message: "No right to delete this!" });
+        }
         post.images.forEach(path => {
           fs.unlinkSync(path);
         });
