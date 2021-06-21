@@ -15,6 +15,14 @@ access-token
 
 #####
 
+POST http://localhost:8080/user/logout
+--request
+Headers{
+    Authorization: <access-token>
+}
+
+#####
+
 POST http://localhost:8080/user/register
 --request
 Body{
