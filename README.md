@@ -18,7 +18,7 @@ access-token
 POST http://localhost:8080/user/logout
 --request
 Headers{
-    Authorization: <access-token>
+    Authorization: access-token
 }
 
 #####
@@ -50,7 +50,7 @@ Body {
 
 #####
 
-POST http://localhost:8080/post/delete/<postId>
+POST http://localhost:8080/post/delete/"postId"
 --request 
 
 Headers {
