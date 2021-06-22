@@ -33,7 +33,7 @@ const userController = {
       const validatedAccount = await yupForAccount.validate(req.body.account);
       const password = await yupForPassword.validate(req.body.password);
       //hashed password
-      User.findOne({ account: validatedAccount })
+      await User.findOne({ account: validatedAccount })
         .then(async user => {
           //Check if req.body.password equals to user password
       
@@ -76,7 +76,7 @@ const userController = {
       await yupForName.validate(name);
       await yupForEmail.validate(email);
       await yupForPassword.validate(password);
-      const hashedPassword = await bcrypt.hash(yupForPassword, 13);
+      const hashedPassword = await bcrypt.hash(password, Number(13));
       const user = new User({
         account,
         name,

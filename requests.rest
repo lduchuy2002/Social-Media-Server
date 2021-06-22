@@ -13,8 +13,8 @@ POST http://localhost:8080/user/login
 Content-Type: application/json
 
 {
-    "account": "ldhuy01011",
-    "password": "donalskehan11"
+    "account": "taikhoan1",
+    "password": "matkhautest1"
 }
 
 
@@ -34,12 +34,11 @@ Content-Type: application/json
     "email": "testemail1@gmail.com",
     "name": "Duc huy",
     "password": "matkhautest1"
-
 }
 ####
 
 POST http://localhost:8080/post/create HTTP/1.1   
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGNlYjk4ZDIyZDA2NDM4ZWMwYzQxNzYiLCJpYXQiOjE2MjQyMDIwMTN9.JNYotE1xXb6U1stpMJ7J30JBzv4vQPS_bseTdBqW8x0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGQxYTk1M2M0ZGY5ZDBlNzRmYjljMGQiLCJpYXQiOjE2MjQzNTMxMTV9.WRBZddXKqSP1sXLkcAnKZr64lRi3hjW4PvPzCxLajTg
 Content-Type: application/json
 
 {
@@ -50,7 +49,7 @@ Content-Type: application/json
 
 ####
 DELETE http://localhost:8080/post/delete/60d006b7d63d2b1fdcd9c350 HTTP/1.1 
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGNlYjk4ZDIyZDA2NDM4ZWMwYzQxNzYiLCJpYXQiOjE2MjQyMDIwMTN9.JNYotE1xXb6U1stpMJ7J30JBzv4vQPS_bseTdBqW8x0
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MGQxYTZkNjQ2NzEyNDFjYTAzMDlkNTAiLCJpYXQiOjE2MjQzNTI0OTN9.U-wkMl0USLTXpnOCxA2DmhUokubnQWC-FePHJzMnTX8
 
 
 ####
